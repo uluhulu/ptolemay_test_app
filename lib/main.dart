@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ptolemay_test_app/bloc/main_page_bloc.dart';
+import 'package:ptolemay_test_app/bloc/main_page_state.dart';
+import 'package:ptolemay_test_app/ui/main_page.dart';
+import 'package:ptolemay_test_app/utils/animation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,62 +12,41 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return BlocProvider(
+      create: (context) => MainPageBloc(),
+      child: MaterialApp(
+        theme: ThemeData(),
+        home: const DarkSample(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class DarkSample extends StatefulWidget {
+  const DarkSample({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _DarkSampleState createState() => _DarkSampleState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class _DarkSampleState extends State<DarkSample> {
+  bool isDark = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+    final size = MediaQuery.of(context).size;
+    final circleOffset = Offset(40, size.height - 40);
+    return BlocBuilder<MainPageBloc, MainPageState>(
+        builder: (BuildContext context, state) {
+      return DarkTransition(
+        childBuilder: (context, x) => const MainPage(
+          title: 'Weather Counter',
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        offset: circleOffset,
+        isDark: state.isDark,
+      );
+    });
   }
 }
