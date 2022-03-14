@@ -2,7 +2,6 @@
 //
 //     final getWeatherResponse = getWeatherResponseFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 GetWeatherResponse getWeatherResponseFromJson(String str) =>

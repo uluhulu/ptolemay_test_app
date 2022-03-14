@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ptolemay_test_app/bloc/main_page_state.dart';
 import 'package:ptolemay_test_app/data/interactor/weather_interactor.dart';
@@ -10,13 +9,19 @@ class MainPageBloc extends Cubit<MainPageState> {
 
   void increaseCounter() {
     if (state.counterValue < 10) {
-      emit(state.copyWith(counterValue: state.counterValue + 1));
+      if (!state.isDark) {
+        emit(state.copyWith(counterValue: state.counterValue + 1));
+      } else {
+        state.counterValue == 9
+            ? emit(state.copyWith(counterValue: state.counterValue + 1))
+            : emit(state.copyWith(counterValue: state.counterValue + 2));
+      }
     }
   }
 
   void decreaseCounter() {
     if (state.counterValue > 0) {
-      if (state.themeData == ThemeData.light()) {
+      if (!state.isDark) {
         emit(state.copyWith(counterValue: state.counterValue - 1));
       } else {
         state.counterValue == 1
@@ -27,10 +32,7 @@ class MainPageBloc extends Cubit<MainPageState> {
   }
 
   void changeThemeData() {
-    emit(state.copyWith(
-        themeData: state.themeData == ThemeData.light()
-            ? ThemeData.dark()
-            : ThemeData.light()));
+    emit(state.copyWith(isDark: !state.isDark));
   }
 
   void getWeather() async {
