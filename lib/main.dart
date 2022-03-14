@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ptolemay_test_app/bloc/main_page_bloc.dart';
 import 'package:ptolemay_test_app/bloc/main_page_state.dart';
+import 'package:ptolemay_test_app/widgets/weather_info_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,8 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const Text(
-                    'Press the icon to get your location',
+                  WeatherInfoWidget(
+                    isLoading: state.isLoading,
+                    city: state.city,
+                    temperature: state.temperature,
                   ),
                   const SizedBox(
                     height: 40,
@@ -75,7 +78,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     FloatingActionButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        cubit.getWeather();
+                      },
                       child: const Icon(Icons.cloud),
                     ),
                     const SizedBox(

@@ -36,6 +36,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   # State Management.
   flutter_bloc: ^8.0.1
+  # Location Service.
+  geolocator: ^8.2.0
+  dio: ^4.0.4
+
+
 
 
 dev_dependencies:
